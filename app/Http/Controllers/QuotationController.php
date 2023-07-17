@@ -2,21 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Quotation;
+use App\Models\User;
+use App\Mail\QtoMail;
 use App\Models\Produk;
-use Carbon\Carbon;use App\Models\Perusahaan;
 use App\Helpers\Helper;
+use App\Models\Quotation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;use App\Models\Perusahaan;
 
 class QuotationController extends Controller
 {
     public function viewDraftQuotation(){
-        $quotaion = Quotation::where('status','Menunggu Konfirmasi')->get();
-        return view('admin.quotation.viewQuotationDraft',[
+        $status = 'Menunggu Konfirmasi';
+        $quotation = Quotation::with(['produk', 'perusahaan'])->where('status', $status)->get();
+        $role = Auth::guard('user')->user()->role;
+        $viewData = [
             'title' => 'Daftar Quotation',
             'slug' => '',
-            'quotation' => $quotaion,
-        ]);
+            'quotation' => $quotation,
+        ];
+        $view = ($role == 1) ? 'admin.quotation.viewQuotationDraft' : 'karyawan.quotation.viewQuotationDraft';
+        return view($view, $viewData);
     }
 
     public function viewTambahDraftQuotation(){
@@ -32,15 +40,19 @@ class QuotationController extends Controller
         $currentYear = Carbon::now()->format('Y');
         $quotationNo = "QTO/{$quotationId}/{$currentMonth}/{$currentYear}";
 
-
-        return view('admin.quotation.viewTambahQuotation',[
+        $role = Auth::guard('user')->user()->role;
+        $viewData = [
             'title' => 'Daftar Quotation',
             'slug' => '',
             'perusahaan' => $perusahaan,
             'qtoNo' => $quotationNo,
             'produk' => $produk,
-        ]);
+        ];
+
+        $view = ($role == 1) ? 'admin.quotation.viewTambahQuotation' : 'karyawan.quotation.viewTambahQuotation';
+        return view($view, $viewData);
     }
+
 
     public function simpanDraftQuotation(Request $request){
         $validatedData = $request->validate([
@@ -52,7 +64,8 @@ class QuotationController extends Controller
             'quantity' => 'required|array',
         ]);
         // return $validatedData;
-
+        $user = User::where('role' , '1')->first();
+        $email = $user->email;
         // Simpan data ke dalam tabel Quotation
         $quotation = new Quotation();
         $quotation->perusahaan_id = $validatedData['perusahaan_id'];
@@ -73,32 +86,40 @@ class QuotationController extends Controller
         // Simpan total ke dalam atribut total pada model Quotation
         $quotation->total = $total;
         $quotation->save();
-        return redirect()->route('menu.quotation')->withToastSuccess('Quotation Berhasil Dibuat');
+        Mail::to($email)->send(new QtoMail($validatedData));
+        $route = (Auth::guard('user')->user()->role == 1) ? 'menu.quotation' : 'karyawan.menu.quotation';
+        return redirect()->route($route)->withToastSuccess('Quotation Berhasil Dibuat');
     }
 
     public function viewDraftQuotationPerusahaan($id){
-        $qto = Quotation::where('id',$id)->first();
+        $qto = Quotation::where('id', $id)->first();
         $total = $qto->total;
         $terbilang = Helper::terbilang($total);
-        return view('admin.quotation.viewQuotationDraftPerusahaan',[
+        $role = Auth::guard('user')->user()->role;
+        $viewData = [
             'title' => 'View Quotation Perusahaan',
             'slug' => $id,
             'qto' => $qto,
             'terbilang' => $terbilang,
-        ]);
+        ];
+        $view = ($role == 1) ? 'admin.quotation.viewQuotationDraftPerusahaan' : 'karyawan.quotation.viewQuotationDraftPerusahaan';
+        return view($view, $viewData);
     }
 
+
     public function viewConfirmedQuotationPerusahaan($id){
-        $qto = Quotation::where('id',$id)->first();
+        $qto = Quotation::where('id', $id)->first();
         $total = $qto->total;
         $terbilang = Helper::terbilang($total);
-
-        return view('admin.quotation.viewQuotationConfirmedPerusahaan',[
+        $role = Auth::guard('user')->user()->role;
+        $viewData = [
             'title' => 'View Quotation Perusahaan',
             'slug' => $id,
             'qto' => $qto,
             'terbilang' => $terbilang,
-        ]);
+        ];
+        $view = ($role == 1) ? 'admin.quotation.viewQuotationConfirmedPerusahaan' : 'karyawan.quotation.viewQuotationConfirmedPerusahaan';
+        return view($view, $viewData);
     }
 
     public function viewQuotationPrint($id){
@@ -131,12 +152,15 @@ class QuotationController extends Controller
     }
 
     public function viewConfirmedtQuotation(){
-        $quotaion = Quotation::where('status','Konfirmasi')->get();
-        return view('admin.quotation.viewQuotationConfirmed',[
+        $quotation = Quotation::where('status', 'Konfirmasi')->get();
+        $role = Auth::guard()->user()->role;
+        $viewData = [
             'title' => 'Daftar Quotation',
             'slug' => '',
-            'quotation' => $quotaion,
-        ]);
+            'quotation' => $quotation,
+        ];
+        $view = ($role == 1) ? 'admin.quotation.viewQuotationConfirmed' : 'karyawan.quotation.viewQuotationConfirmed';
+        return view($view, $viewData);
     }
 
     // public function viewQuotation(){

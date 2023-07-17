@@ -2,25 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Produk;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProdukController extends Controller
 {
     public function viewProduk(){
-        return view('admin.produk.viewProduk',[
-            'title' => 'Daftar Produk',
-            'produk' => Produk::all(),
-            'slug' => '',
-        ]);
+        if (Auth::guard('user')->user()->role == 1) {
+            return view('admin.produk.viewProduk',[
+                'title' => 'Daftar Produk',
+                'produk' => Produk::all(),
+                'slug' => '',
+            ]);
+        }else {
+            return view('karyawan.produk.viewProduk',[
+                'title' => 'Daftar Produk',
+                'produk' => Produk::all(),
+                'slug' => '',
+            ]);
+        }
     }
 
     public function viewTambahProduk(){
-        return view('admin.produk.viewTambahProduk',[
-            'title' => 'Tambah Data Produk',
-            'slug' => '',
+        if (Auth::guard('user')->user()->role == 1) {
+            return view('admin.produk.viewTambahProduk',[
+                'title' => 'Tambah Data Produk',
+                'slug' => '',
 
-        ]);
+            ]);
+        }else{
+            return view('karyawan.produk.viewTambahProduk',[
+                'title' => 'Tambah Data Produk',
+                'slug' => '',
+
+            ]);
+        }
+
     }
 
     public function simpanProduk(Request $request){
@@ -50,11 +68,20 @@ class ProdukController extends Controller
 
     public function viewEditProduk($slug){
         $produk = Produk::where('slug',$slug)->first();
-        return view('admin.produk.viewEditProduk',[
-            'title' => 'Edit Data Produk',
-            'produks' => $produk,
-            'slug' => $slug,
-        ]);
+        if (Auth::guard('user')->user()->role == 1) {
+            return view('admin.produk.viewEditProduk',[
+                'title' => 'Edit Data Produk',
+                'produks' => $produk,
+                'slug' => $slug,
+            ]);
+        }else{
+            return view('karyawan.produk.viewEditProduk',[
+                'title' => 'Edit Data Produk',
+                'produks' => $produk,
+                'slug' => $slug,
+            ]);
+        }
+
     }
 
     public function updateProduk(Request $request, $slug){
@@ -69,6 +96,10 @@ class ProdukController extends Controller
             'slug' => preg_replace('/\s+/', '-', $str),
         ];
         Produk::where('id',$id)->update($data);
-        return redirect()->route('produk.edit',$slug)->withToastSuccess('Data Produk Berhasil Ditambahkan');
+        if (Auth::guard('user')->user()->role == 1) {
+            return redirect()->route('produk.edit',$slug)->withToastSuccess('Data Produk Berhasil Ditambahkan');
+        }else{
+            return redirect()->route('karyawan.produk.edit',$slug)->withToastSuccess('Data Produk Berhasil Ditambahkan');
+        }
     }
 }

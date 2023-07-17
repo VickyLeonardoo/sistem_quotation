@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -21,7 +21,7 @@ class AuthController extends Controller
             if ($user->role == '1') {
                 return redirect()->intended('home')->withToastSuccess('Kamu Berhasil Masuk!');
             }else if($user->role == '2'){
-                return redirect()->intended('karyawan')->withToastSuccess('Kamu Berhasil Masuk!');
+                return redirect()->route('karyawan.home')->withToastSuccess('Kamu Berhasil Masuk!');
             }
         }
         return redirect()->back()->withToastError('Login Gagal, Email atau Password Kamu Salah!');

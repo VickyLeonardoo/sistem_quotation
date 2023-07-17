@@ -2,25 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Perusahaan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 class PerusahaanController extends Controller
 {
     public function viewPerusahaan(){
         $perusahaan = Perusahaan::all();
-        return view('admin.perusahaan.viewPerusahaan',[
-            'title' => 'Data Perusahaan',
-            'perusahaan' => $perusahaan,
-            'slug' => ''
-        ]);
+        if (Auth::guard('user')->user()->role == 1) {
+            return view('admin.perusahaan.viewPerusahaan',[
+                'title' => 'Data Perusahaan',
+                'perusahaan' => $perusahaan,
+                'slug' => ''
+            ]);
+        }else{
+            return view('karyawan.perusahaan.viewPerusahaan',[
+                'title' => 'Data Perusahaan',
+                'perusahaan' => $perusahaan,
+                'slug' => ''
+            ]);
+        }
     }
 
     public function viewTambahPerusahaan(){
-        return view('admin.perusahaan.viewTambahPerusahaan',[
-            'title' => 'Tambah Data Perusahaan',
-            'slug' => '',
+        if (Auth::guard('user')->user()->role == 1) {
+            return view('admin.perusahaan.viewTambahPerusahaan',[
+                'title' => 'Tambah Data Perusahaan',
+                'slug' => '',
 
-        ]);
+            ]);
+        }else{
+            return view('karyawan.perusahaan.viewTambahPerusahaan',[
+                'title' => 'Tambah Data Perusahaan',
+                'slug' => '',
+
+            ]);
+        }
     }
 
     public function simpanPerusahaan(Request $request){
@@ -53,11 +71,20 @@ class PerusahaanController extends Controller
 
     public function viewEditPerusahaan($slug){
         $perusahaan = Perusahaan::where('slug',$slug)->first();
-        return view('admin.perusahaan.viewEditPerusahaan',[
-            'title' => 'Edit Data perusahaan',
-            'perusahaan' => $perusahaan,
-            'slug' => $slug
-        ]);
+        if (Auth::guard('user')->user()->role == 1) {
+            return view('admin.perusahaan.viewEditPerusahaan',[
+                'title' => 'Edit Data perusahaan',
+                'perusahaan' => $perusahaan,
+                'slug' => $slug
+            ]);
+        }else{
+            return view('karyawan.perusahaan.viewEditPerusahaan',[
+                'title' => 'Edit Data perusahaan',
+                'perusahaan' => $perusahaan,
+                'slug' => $slug
+            ]);
+        }
+
     }
 
     public function updatePerusahaan(Request $request, $slug){
@@ -68,7 +95,11 @@ class PerusahaanController extends Controller
         $data = request()->except(['_token']);
 
         Perusahaan::where('id',$id)->update($data + ['slug' => $slug]);
-        return redirect()->route('perusahaan.edit',$slug)->withToastSuccess('Data Produk Berhasil Ditambahkan');
+        if (Auth::guard('user')->user()->role == 1) {
+            return redirect()->route('perusahaan.edit',$slug)->withToastSuccess('Data Produk Berhasil Ditambahkan');
+        }else{
+            return redirect()->route('karyawan.perusahaan.edit',$slug)->withToastSuccess('Data Produk Berhasil Ditambahkan');
+        }
     }
 
 }

@@ -4,27 +4,30 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Produk;
+use App\Helpers\Helper;
 use App\Models\Invoice;
 use App\Models\Quotation;
 use App\Models\Perusahaan;
 use Illuminate\Http\Request;
-use App\Helpers\Helper;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
     public function viewDraftInvoice(){
-        $invoice = Invoice::where('status','Menunggu Konfirmasi')->get();
-        return view('admin.invoice.viewDraftInvoice',[
+        $invoice = Invoice::where('status', 'Menunggu Konfirmasi')->get();
+        $role = Auth::guard('user')->user()->role;
+        $viewData = [
             'title' => 'Draft Invoice',
             'slug' => '',
             'invoice' => $invoice,
-        ]);
+        ];
+        $view = ($role == 1) ? 'admin.invoice.viewDraftInvoice' : 'karyawan.invoice.viewDraftInvoice';
+        return view($view, $viewData);
     }
 
     public function viewTambahDraftInvoice(){
         $perusahaan = Perusahaan::all();
         $quotation = Quotation::where('is_invoice', false)->where('status','Konfirmasi')->get();
-
         try {
             $invoice = Invoice::latest()->firstOrFail();
             $invoiceId = $invoice->id + 1;
@@ -34,14 +37,13 @@ class InvoiceController extends Controller
         $currentMonth = Carbon::now()->formatLocalized('%b');
         $currentYear = Carbon::now()->format('Y');
         $invoiceNo = "INV/{$invoiceId}/{$currentMonth}/{$currentYear}";
-
-        return view('admin.invoice.viewTambahInvoice',[
+        $view = (Auth::guard('user')->user()->role == 1) ? 'admin.invoice.viewTambahInvoice' : 'karyawan.invoice.viewTambahInvoice';
+        return view($view, [
             'title' => 'Daftar Quotation',
             'slug' => '',
             'perusahaan' => $perusahaan,
             'invNo' => $invoiceNo,
             'qto' => $quotation,
-
         ]);
     }
 
@@ -63,32 +65,44 @@ class InvoiceController extends Controller
         $qtoId = $request->quotation_id;
         Quotation::where('id',$qtoId)->update(['is_invoice' => true]);
         Invoice::create($validatedData);
-        return redirect()->route('menu.draft.invoice')->withToastSuccess('Invoice Berhasil Dibuat');
+
+        $route = (Auth::guard('user')->user()->role == 1) ? 'menu.draft.invoice' : 'karyawan.menu.draft.invoice';
+        return redirect()->route($route)->withToastSuccess('Invoice Berhasil Dibuat');
+
     }
 
     public function viewConfirmedInvoicePerusahaan($id){
-        $invoice = Invoice::where('id',$id)->first();
+        $invoice = Invoice::where('id', $id)->first();
         $total = $invoice->quotation->total;
         $terbilang = Helper::terbilang($total);
-        return view('admin.invoice.viewInvoiceConfirmedPerusahaan',[
+        $role = Auth::guard('user')->user()->role;
+        $viewData = [
             'title' => 'Invoice',
             'slug' => $id,
             'inv' => $invoice,
             'terbilang' => $terbilang,
-        ]);
+        ];
+
+        $view = ($role == 1) ? 'admin.invoice.viewInvoiceConfirmedPerusahaan' : 'karyawan.invoice.viewInvoiceConfirmedPerusahaan';
+        return view($view, $viewData);
     }
 
+
     public function viewInvoicePerusahaan($id){
-        $invoice = Invoice::where('id',$id)->first();
+        $invoice = Invoice::where('id', $id)->first();
         $total = $invoice->quotation->total;
         $terbilang = Helper::terbilang($total);
-        return view('admin.invoice.viewInvoiceDraftPerusahaan',[
+        $role = Auth::guard('user')->user()->role;
+        $viewData = [
             'title' => 'Invoice',
             'slug' => $id,
             'inv' => $invoice,
             'terbilang' => $terbilang,
-        ]);
+        ];
+        $view = ($role == 1) ? 'admin.invoice.viewInvoiceDraftPerusahaan' : 'karyawan.invoice.viewInvoiceDraftPerusahaan';
+        return view($view, $viewData);
     }
+
 
     public function konfirmasiInvoice($id){
         $invoice = Invoice::find($id);
@@ -116,12 +130,16 @@ class InvoiceController extends Controller
 
     public function viewConfirmedtInvoice(){
         $invoice = Invoice::where('status', 'Konfirmasi')->get();
-        return view('admin.invoice.viewInvoiceConfirmed',[
+        $role = Auth::guard('user')->user()->role;
+        $viewData = [
             'title' => 'Confirmed Invoice',
             'slug' => '',
             'inv' => $invoice,
-        ]);
+        ];
+        $view = ($role == 1) ? 'admin.invoice.viewInvoiceConfirmed' : 'karyawan.invoice.viewInvoiceConfirmed';
+        return view($view, $viewData);
     }
+
 
 
 }
