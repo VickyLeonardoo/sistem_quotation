@@ -10,7 +10,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="">Nama Perusahaan</label>
-                            <select name="perusahaan_id" class="form-control" id="">
+                            <select name="perusahaan_id" class="form-control selectpicker" data-live-search="true">
                                 @foreach ($perusahaan as $data)
                                     <option value="{{ $data->id }}">{{ $data->kodePerusahaan }} - {{ $data->namaPerusahaan }}</option>
                                 @endforeach

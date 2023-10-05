@@ -32,9 +32,9 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('atlantis') }}/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('atlantis') }}/assets/css/atlantis.min.css">
-
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="{{ asset('atlantis') }}/assets/css/demo.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 </head>
 
 <body>
@@ -82,8 +82,8 @@
                                                     src="{{ asset('atlantis') }}/assets/img/profile.jpg"
                                                     alt="image profile" class="avatar-img rounded"></div>
                                             <div class="u-text">
-                                                <h4>Hizrian</h4>
-                                                <p class="text-muted">hello@example.com</p><a href="profile.html"
+                                                <h4>{{ Auth::guard('user')->user()->name }}</h4>
+                                                <p class="text-muted">{{ Auth::guard('user')->user()->email }}</p><a href="profile.html"
                                                     class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                             </div>
                                         </div>
@@ -236,7 +236,8 @@
 
     <!-- Atlantis JS -->
     <script src="{{ asset('atlantis') }}/assets/js/atlantis.min.js"></script>
-
+    {{-- Select Picker --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <!-- Atlantis DEMO methods, don't include it in your project! -->
     <script src="{{ asset('atlantis') }}/assets/js/setting-demo.js"></script>
     <script src="{{ asset('atlantis') }}/assets/js/demo.js"></script>

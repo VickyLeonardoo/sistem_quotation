@@ -27,6 +27,7 @@
                                 <td>{{ $data->status }}</td>
                                 <td>
                                     <a href="/karyawan/menu/confirmed-quotation/view-quotation/{{ $data->id }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                                    <a href="/karyawan/menu/email-quotation/{{ $data->id }}" class="btn btn-primary"><i class="fas fa-envelope"></i></a>
                                     {{-- <a href="/master-data/perusahaan/edit/{{ $data->slug }}" class="btn btn-info"><i class="fas fa-edit"></i>Edit</a> --}}
                                     {{-- <a href="/menu/draft-quotation/hapus-quotation/{{ $data->id }}" class="btn btn-danger"><i class="fas fa-trash"></i>Hapus</a> --}}
                                 </td>

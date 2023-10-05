@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use Dompdf\Dompdf;
 use App\Models\User;
 use App\Mail\QtoMail;
 use App\Models\Produk;
@@ -163,32 +165,51 @@ class QuotationController extends Controller
         return view($view, $viewData);
     }
 
-    // public function viewQuotation(){
-    //     $nowDate = Carbon::now();
-    //     $quotation = new Quotation();
-    //     $quotation->perusahaan_id = '1';
-    //     $quotation->quotationNo = '3';
-    //     $quotation->tglQuotation = $nowDate;
-    //     $quotation->total = '100000';
+    // public function sendMail($id){
+    //     $qto = Quotation::find($id);
+    //     $total = $qto->total;
+    //     $terbilang = Helper::terbilang($total);
 
-    //     $quotation->save();
+    //     $pdf = \PDF::loadView('email.pdf_mail', compact('qto','terbilang'))->setOptions(['defaultFont' => 'sans-serif']);
+    //     $email = $qto->perusahaan->emailPerusahaan;
 
-    //     $product1 = Produk::find(1);
-    //     $product2 = Produk::find(2);
-
-    //     $quotation->produk()->attach([
-    //         $product1->id => ['quantity' => 2],
-    //         $product2->id => ['quantity' => 3],
-    //     ]);
+    //     Mail::send('email.pdf_mail', ['qto' => $qto, 'terbilang' => $terbilang], function ($message) use ($qto, $pdf) {
+    //         $email = $qto->perusahaan->emailPerusahaan;
+    //         if (!empty($email)) {
+    //             $message->to($email)
+    //                 ->subject('Quotation')
+    //                 ->attachData($pdf->output(), "test.pdf");
+    //         }
+    //     });
+    //     return 'sukses';
     // }
 
-    // public function getQuotation(){
-    //     $quotation = Quotation::find(3);
+    public function sendMail($id){
+        // Generate PDF from Blade template
+        $qto = Quotation::find($id);
+        $total = $qto->total;
+        $terbilang = Helper::terbilang($total);
 
-        // foreach ($quotation->produk as $product) {
-        //     echo $product->namaProduk.','.$product->hargaProduk.'<br>';;
-        // }
-    // }
+        $dompdf = new Dompdf();
+        $html = view('email.pdf_mail', ['qto' => $qto, 'terbilang' => $terbilang])->render();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $output = $dompdf->output();
 
+        // Save PDF to temporary file
+        $pdfPath = public_path('temp.pdf');
+        file_put_contents($pdfPath, $output);
+
+        // Send email with the PDF attachment
+        $email = 'vickyleonardo00@gmail.com'; // Email recipient
+        Mail::send('email.pdf_mail', ['qto' => $qto, 'terbilang' => $terbilang], function ($message) use ($email, $pdfPath, $qto) {
+            $message->to($email)
+                ->subject('Subject of the email')
+                ->attach($pdfPath);
+        });
+
+        // Delete the temporary PDF file
+        unlink($pdfPath);
+    }
 
 }

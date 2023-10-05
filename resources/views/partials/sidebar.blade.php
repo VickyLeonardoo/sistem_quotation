@@ -8,8 +8,12 @@
                 <div class="info">
                     <a href="#collapseExample" aria-expanded="true">
                         <span>
-                            Hizrian
+                            {{ Auth::guard('user')->user()->name }}
+                            @if ( Auth::guard('user')->user()->role == 1)
                             <span class="user-level">Administrator</span>
+                            @else
+                            <span class="user-level">Karyawan</span>
+                            @endif
                             <span class="caret"></span>
                         </span>
                     </a>
@@ -65,6 +69,11 @@
                         <p>Perusahaan</p>
                     </a>
                 </li>
+                <li class="nav-item {{ request()->is('master-data/karyawan','master-data/karyawan/edit/'.$slug) ? 'active' : '' }}">
+                    <a href="/master-data/karyawan">
+                        <p>Karyawan</p>
+                    </a>
+                </li>
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
@@ -101,6 +110,22 @@
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
+                    <h4 class="text-section">Delivery Orded</h4>
+                </li>
+                <li class="nav-item {{ request()->is('menu/draft-invoice','menu/draft-invoice/tambah-data','menu/draft-invoice/view-invoice/'.$slug) ? 'active' : '' }}">
+                    <a href="/menu/draft-invoice">
+                        <p>Draft DO</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->is('menu/confirmed-invoice','menu/confirmed-invoice/view-invoice/'.$slug) ? 'active' : '' }}">
+                    <a href="/menu/confirmed-invoice">
+                        <p>Confirmed DO</p>
+                    </a>
+                </li>
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
                     <h4 class="text-section">CV Mitra Gabril Perkasa</h4>
                 </li>
                 <li class="nav-item {{ request()->is('profile') ? 'active' : '' }}">
@@ -108,7 +133,6 @@
                         <p>Profile</p>
                     </a>
                 </li>
-
             </ul>
         </div>
     </div>

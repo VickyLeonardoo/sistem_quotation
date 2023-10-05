@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\PerusahaanController;
@@ -20,7 +21,7 @@ use App\Http\Controllers\PerusahaanController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/web', function () {
@@ -75,6 +76,14 @@ Route::group(['middleware' => ['auth:user']],function(){
         //Confirmed Invoice
         Route::GET('/menu/confirmed-invoice',[InvoiceController::class,'viewConfirmedtInvoice'])->name('menu.confirmed.invoice');
         Route::GET('/menu/confirmed-invoice/view-invoice/{id}',[InvoiceController::class,'viewConfirmedInvoicePerusahaan']);
+        //Karyawan
+        Route::GET('/master-data/karyawan',[KaryawanController::class,'viewKaryawan']);
+        Route::GET('/master-data/karyawan/tambah-data',[KaryawanController::class,'viewTambahKaryawan']);
+        Route::POST('/master-data/karyawan/simpan-karyawan',[KaryawanController::class,'simpanKaryawan']);
+        Route::GET('/master-data/karyawan/edit/{id}',[KaryawanController::class,'viewEditKaryawan'])->name('karyawan.edit');
+        Route::POST('/master-data/karyawan/update/{id}',[KaryawanController::class,'updateKaryawan']);
+        Route::GET('/master-data/karyawan/reset-password/{id}',[KaryawanController::class,'resetPassword']);
+
     });
 });
 
@@ -116,5 +125,9 @@ Route::group(['middleware' => ['auth:user']],function(){
         //Confirmed Invoice
         Route::GET('/karyawan/menu/confirmed-invoice',[InvoiceController::class,'viewConfirmedtInvoice'])->name('karyawan.menu.confirmed.invoice');
         Route::GET('/karyawan/menu/confirmed-invoice/view-invoice/{id}',[InvoiceController::class,'viewConfirmedInvoicePerusahaan']);
+
+        //Email PDF
+        Route::GET('/karyawan/menu/email-quotation/{id}',[QuotationController::class,'sendMail']);
+
     });
 });

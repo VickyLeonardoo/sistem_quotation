@@ -21,7 +21,7 @@
                                         <div class="invoice p-3 mb-3">
                                             <form action="/simpan-profile" method="POST">
                                                 @csrf
-                                                <div class="row">
+                                                {{-- <div class="row">
                                                     <div class="col-12">
                                                         <div class="form-group">
                                                             <label for="">Nama CV</label>
@@ -93,7 +93,7 @@
                                                             <input type="submit" value="Simpan" class="form-control btn-primary btn">
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </form>
                                         </div>
                                     </div>
