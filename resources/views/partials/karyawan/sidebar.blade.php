@@ -50,7 +50,36 @@
                     </li>
                 </li>
             </ul>
-            <ul class="nav nav-primary">
+             <ul class="nav nav-primary">
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Quotation</h4>
+                </li>
+                <li class="nav-item {{ request()->is('karyawan/menu/confirmed-quotation') ? 'active' : '' }}">
+                    <a href="/karyawan/menu/confirmed-quotation">
+                        <p>Confirmed Quotation</p>
+                    </a>
+                </li>
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Project</h4>
+                </li>
+                <li class="nav-item {{ request()->is('karyawan/master-data/produk','karyawan/master-data/produk/tambah-data','karyawan/master-data/produk/edit/'.$slug) ? 'active' : '' }}">
+                    <a href="/karyawan/master-data/produk">
+                        <p>On Going Project</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->is('karyawan/master-data/perusahaan','karyawan/master-data/perusahaan/tambah-data','karyawan/master-data/perusahaan/edit/'.$slug) ? 'active' : '' }}">
+                    <a href="/karyawan/master-data/perusahaan">
+                        <p>Done Project</p>
+                    </a>
+                </li>
+            </ul>
+            {{-- <ul class="nav nav-primary">
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
@@ -99,7 +128,7 @@
                         <p>Confirmed Invoice</p>
                     </a>
                 </li>
-            </ul>
+            </ul> --}}
         </div>
     </div>
 </div>

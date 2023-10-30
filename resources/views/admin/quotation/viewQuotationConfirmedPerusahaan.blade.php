@@ -21,11 +21,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <a href="/menu/draft-quotation/view-quotation-print/{{ $qto->id }}" target="_blank" class="btn btn-primary"><i class="fas fa-print"></i> Print</a ><br><br>
-                                                @if ($qto->status == 'Konfirmasi')
                                                     Status: <button href="#" class="btn-success">Konfirmasi</button ><br><br>
-                                                @else
-                                                    Status: <button href="#" class="btn-danger">Menunggu Konfirmasi</button ><br><br>
-                                                @endif
                                                     <h4>
                                                     <i class="fas fa-globe"></i> AdminLTE, Inc.
                                                     <small class="float-right">Date: {{ Carbon\Carbon::parse($qto->tglQuotation)->format('d-M-Y') }}</small>
@@ -105,7 +101,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if ($qto->status == 'Menunggu Konfirmasi')
+                                        @if ($qto->status == '0')
                                             <a href="/menu/draft-quotation/view-quotation/konfirmasi/{{ $qto->id }}" class="btn btn-info"></i>Setuju</a >
                                             <a href="/menu/draft-quotation/view-quotation/tolak/{{ $qto->id }}" class="btn btn-danger"></i>Tolak</a >
                                         @endif

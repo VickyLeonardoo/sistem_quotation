@@ -241,6 +241,7 @@
     <!-- Atlantis DEMO methods, don't include it in your project! -->
     <script src="{{ asset('atlantis') }}/assets/js/setting-demo.js"></script>
     <script src="{{ asset('atlantis') }}/assets/js/demo.js"></script>
+    @yield('js')
     <script>
         $(document).ready(function() {
             $('#example').DataTable({

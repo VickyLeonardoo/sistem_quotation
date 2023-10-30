@@ -19,17 +19,19 @@ class ProfileController extends Controller
     public function simpanProfile(Request $request){
         $request->validate([
             'nama' => 'required',
+            'alamat' => 'required',
             'email'=> 'required',
             'kota' => 'required',
             'provinsi' => 'required',
-            'alamat' => 'required',
+            'noTelp' => 'required'
         ],
         [
             'nama.required' => 'Nama Wajib Diisi',
             'email.required'=> 'Email Wajib Diisi',
             'kota.required' => 'Kota Wajib Diisi',
-            'provinsi.required' => 'Provinsi Wajib Diisi',
             'alamat.required' => 'Alamat Wajib Diisi',
+            'provinsi.required' => 'Provinsi Wajib Diisi',
+            'noTelp.required' => 'No Telfon Wajib Diisi',
         ]);
 
         $data = request()->except(['_token']);

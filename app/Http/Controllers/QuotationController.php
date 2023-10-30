@@ -13,12 +13,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;use App\Models\Perusahaan;
+use App\Models\Project;
 
 class QuotationController extends Controller
 {
     public function viewDraftQuotation(){
-        $status = 'Menunggu Konfirmasi';
-        $quotation = Quotation::with(['produk', 'perusahaan'])->where('status', $status)->get();
+        $quotation = Quotation::with(['produk', 'perusahaan'])->whereIn('status', ['0','1'])->get();
         $role = Auth::guard('user')->user()->role;
         $viewData = [
             'title' => 'Daftar Quotation',
@@ -88,7 +88,7 @@ class QuotationController extends Controller
         // Simpan total ke dalam atribut total pada model Quotation
         $quotation->total = $total;
         $quotation->save();
-        Mail::to($email)->send(new QtoMail($validatedData));
+        // Mail::to($email)->send(new QtoMail($validatedData));
         $route = (Auth::guard('user')->user()->role == 1) ? 'menu.quotation' : 'karyawan.menu.quotation';
         return redirect()->route($route)->withToastSuccess('Quotation Berhasil Dibuat');
     }
@@ -140,21 +140,27 @@ class QuotationController extends Controller
         return redirect()->back()->withToastSuccess('Data Berhasil Dihapus');
     }
 
+    public function emailQuotation($id){
+        $qto = Quotation::find($id);
+        return $qto;
+    }
     public function konfirmasiQuotation($id){
         $quotation = Quotation::find($id);
-        $quotation->update(['status' =>'Konfirmasi']);
-        return redirect()->back()->withToastSuccess('Berhasil Dikonfirmasi');
+        $quotation->update(['status' =>'2']);
+        $project = Project::create([
+            'quotation_id' => $id,
+        ]);
+        return redirect()->route('menu.project.ongoing.edit',$project->id)->with('success','Project Berhasil Dibuat, Lengkapi Formulir Project yang Tersedia');
     }
 
     public function tolakQuotation($id){
         $quotation = Quotation::find($id);
         $quotation->update(['status' =>'Ditolak']);
         return redirect()->route('menu.quotation')->withToastSuccess('Berhasil Ditolak');
-
     }
 
     public function viewConfirmedtQuotation(){
-        $quotation = Quotation::where('status', 'Konfirmasi')->get();
+        $quotation = Quotation::where('status', '2')->get();
         $role = Auth::guard()->user()->role;
         $viewData = [
             'title' => 'Daftar Quotation',
@@ -165,28 +171,10 @@ class QuotationController extends Controller
         return view($view, $viewData);
     }
 
-    // public function sendMail($id){
-    //     $qto = Quotation::find($id);
-    //     $total = $qto->total;
-    //     $terbilang = Helper::terbilang($total);
-
-    //     $pdf = \PDF::loadView('email.pdf_mail', compact('qto','terbilang'))->setOptions(['defaultFont' => 'sans-serif']);
-    //     $email = $qto->perusahaan->emailPerusahaan;
-
-    //     Mail::send('email.pdf_mail', ['qto' => $qto, 'terbilang' => $terbilang], function ($message) use ($qto, $pdf) {
-    //         $email = $qto->perusahaan->emailPerusahaan;
-    //         if (!empty($email)) {
-    //             $message->to($email)
-    //                 ->subject('Quotation')
-    //                 ->attachData($pdf->output(), "test.pdf");
-    //         }
-    //     });
-    //     return 'sukses';
-    // }
-
     public function sendMail($id){
         // Generate PDF from Blade template
         $qto = Quotation::find($id);
+        $quotationNo = $qto->quotationNo;
         $total = $qto->total;
         $terbilang = Helper::terbilang($total);
 
@@ -197,7 +185,7 @@ class QuotationController extends Controller
         $output = $dompdf->output();
 
         // Save PDF to temporary file
-        $pdfPath = public_path('temp.pdf');
+        $pdfPath = public_path('QuotationMitra.pdf');
         file_put_contents($pdfPath, $output);
 
         // Send email with the PDF attachment
@@ -210,6 +198,10 @@ class QuotationController extends Controller
 
         // Delete the temporary PDF file
         unlink($pdfPath);
+        $qto->update([
+            'is_email' => true,
+            'status' => '1'
+        ]);
+        return redirect()->back()->withToastSuccess('Email Berhasil Dikirim');
     }
-
 }

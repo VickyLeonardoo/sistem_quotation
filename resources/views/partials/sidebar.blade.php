@@ -94,6 +94,22 @@
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
+                    <h4 class="text-section">Project</h4>
+                </li>
+                <li class="nav-item {{ request()->is('menu/project/ongoing*') ? 'active':'' }}">
+                    <a href="/menu/project/ongoing">
+                        <p>Project Ongoing</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->is('menu/project/done') ? 'active':'' }}">
+                    <a href="/menu/project/done">
+                        <p>Project Done</p>
+                    </a>
+                </li>
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
                     <h4 class="text-section">Invoice</h4>
                 </li>
                 <li class="nav-item {{ request()->is('menu/draft-invoice','menu/draft-invoice/tambah-data','menu/draft-invoice/view-invoice/'.$slug) ? 'active' : '' }}">
@@ -106,7 +122,7 @@
                         <p>Confirmed Invoice</p>
                     </a>
                 </li>
-                <li class="nav-section">
+                {{-- <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
@@ -121,7 +137,7 @@
                     <a href="/menu/confirmed-invoice">
                         <p>Confirmed DO</p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>

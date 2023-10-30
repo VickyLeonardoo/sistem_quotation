@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('quotationNo');
             $table->date('tglQuotation');
             $table->decimal('total', 15, 2)->nullable();
-            $table->enum('status', ['Konfirmasi', 'Menunggu Konfirmasi','Ditolak'])->default('Menunggu Konfirmasi');
+            $table->enum('status', ['0', '1','2'])->default('0');
             $table->boolean('is_invoice')->default(false);
+            $table->boolean('is_email')->default(false);
             $table->timestamps();
         });
     }
