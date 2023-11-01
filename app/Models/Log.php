@@ -5,17 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Log extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-    public function quotation(){
-        return $this->belongsTo(Quotation::class);
-    }
-
-    public function log(){
-        return $this->hasMany(Log::class);
+    public function project(){
+        return $this->belongsTo(Project::class);
     }
 }

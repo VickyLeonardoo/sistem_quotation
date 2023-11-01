@@ -20,14 +20,9 @@
                                     <div class="invoice p-3 mb-3">
                                         <div class="row">
                                             <div class="col-12">
-                                                <a href="/karyawan/menu/draft-quotation/view-quotation-print/{{ $qto->id }}" target="_blank" class="btn btn-primary"><i class="fas fa-print"></i> Print</a ><br><br>
-                                                @if ($qto->status == 'Konfirmasi')
+                                                {{-- <a href="/karyawan/menu/draft-quotation/view-quotation-print/{{ $qto->id }}" target="_blank" class="btn btn-primary"><i class="fas fa-print"></i> Print</a ><br><br> --}}
                                                     Status: <button href="#" class="btn-success">Konfirmasi</button ><br><br>
-                                                @else
-                                                    Status: <button href="#" class="btn-danger">Menunggu Konfirmasi</button ><br><br>
-                                                @endif
                                                     <h4>
-                                                    <i class="fas fa-globe"></i> AdminLTE, Inc.
                                                     <small class="float-right">Date: {{ Carbon\Carbon::parse($qto->tglQuotation)->format('d-M-Y') }}</small>
                                                 </h4>
                                             </div>

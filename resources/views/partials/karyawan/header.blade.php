@@ -240,6 +240,7 @@
     <!-- Atlantis DEMO methods, don't include it in your project! -->
     <script src="{{ asset('atlantis') }}/assets/js/setting-demo.js"></script>
     <script src="{{ asset('atlantis') }}/assets/js/demo.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#example').DataTable({
@@ -248,6 +249,11 @@
                 }
             });
         });
+        @if($errors->any())
+            $(document).ready(function(){
+                $('#exampleModal').modal('show');
+            });
+        @endif
 
         $('.tambah-produk').click(function() {
             @if (isset($produk))

@@ -8,6 +8,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\PerusahaanController;
 /*
@@ -77,7 +78,6 @@ Route::group(['middleware' => ['auth:user']],function(){
         Route::GET('/menu/project/done',[ProjectController::class,'projectDone'])->name('menu.project.done');
 
 
-
         //Invoice Draft
         Route::GET('/menu/draft-invoice',[InvoiceController::class,'viewDraftInvoice'])->name('menu.draft.invoice');
         Route::GET('/menu/draft-invoice/tambah-data',[InvoiceController::class,'viewTambahDraftInvoice']);
@@ -113,8 +113,17 @@ Route::group(['middleware' => ['auth:user']],function(){
         // Route::GET('/karyawan/menu/draft-quotation/view-quotation-print/{id}',[QuotationController::class,'viewQuotationPrint']);
 
         Route::GET('/karyawan/menu/confirmed-quotation',[QuotationController::class,'viewConfirmedtQuotation'])->name('karyawan.menu.confirmed.quotation');
-        // Route::GET('/karyawan/menu/confirmed-quotation/view-quotation/{id}',[QuotationController::class,'viewConfirmedQuotationPerusahaan']);
+        Route::GET('/karyawan/menu/confirmed-quotation/view-quotation/{id}',[QuotationController::class,'viewConfirmedQuotationPerusahaan']);
 
+
+
+        Route::GET('/karyawan/menu/project/ongoing',[ProjectController::class,'index'])->name('karyawan.menu.project.ongoing');
+        Route::GET('/karyawan/menu/project/ongoing/edit/{id}',[ProjectController::class,'viewEdit'])->name('karyawan.menu.project.ongoing.edit');
+        Route::POST('/karyawan/menu/project/ongoing/update/{id}',[ProjectController::class,'updateProject'])->name('karyawan.menu.project.ongoing.update');
+        Route::GET('/karyawan/menu/project/done',[ProjectController::class,'projectDone'])->name('karyawan.menu.project.done');
+        Route::GET('/karyawan/menu/project/done/{id}/view',[ProjectController::class,'projectDoneView']);
+
+        Route::POST('/karyawan/menu/project/{id}/simpan-log',[LogController::class,'simpanLog'])->name('karyawan.menu.project.simpan.log');
         // //Invoice Draft
         // Route::GET('/karyawan/menu/draft-invoice',[InvoiceController::class,'viewDraftInvoice'])->name('karyawan.menu.draft.invoice');
         // Route::GET('/karyawan/menu/draft-invoice/tambah-data',[InvoiceController::class,'viewTambahDraftInvoice']);

@@ -57,7 +57,7 @@
                     </span>
                     <h4 class="text-section">Quotation</h4>
                 </li>
-                <li class="nav-item {{ request()->is('karyawan/menu/confirmed-quotation') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->is('karyawan/menu/confirmed-quotation*') ? 'active' : '' }}">
                     <a href="/karyawan/menu/confirmed-quotation">
                         <p>Confirmed Quotation</p>
                     </a>
@@ -68,13 +68,13 @@
                     </span>
                     <h4 class="text-section">Project</h4>
                 </li>
-                <li class="nav-item {{ request()->is('karyawan/master-data/produk','karyawan/master-data/produk/tambah-data','karyawan/master-data/produk/edit/'.$slug) ? 'active' : '' }}">
-                    <a href="/karyawan/master-data/produk">
+                <li class="nav-item {{ request()->is('karyawan/menu/project/ongoing') ? 'active' : '' }}">
+                    <a href="{{ url('karyawan/menu/project/ongoing') }}">
                         <p>On Going Project</p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->is('karyawan/master-data/perusahaan','karyawan/master-data/perusahaan/tambah-data','karyawan/master-data/perusahaan/edit/'.$slug) ? 'active' : '' }}">
-                    <a href="/karyawan/master-data/perusahaan">
+                <li class="nav-item {{ request()->is('karyawan/menu/project/done*') ? 'active' : '' }}">
+                    <a href="/karyawan/menu/project/done">
                         <p>Done Project</p>
                     </a>
                 </li>
