@@ -27,7 +27,7 @@ class InvoiceController extends Controller
 
     public function viewTambahDraftInvoice(){
         $perusahaan = Perusahaan::all();
-        $quotation = Quotation::where('is_invoice', false)->where('status','Konfirmasi')->get();
+        $quotation = Quotation::where('is_invoice', false)->where('status','2')->get();
         try {
             $invoice = Invoice::latest()->firstOrFail();
             $invoiceId = $invoice->id + 1;

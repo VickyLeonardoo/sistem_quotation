@@ -101,7 +101,7 @@
                         <p>Project Ongoing</p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->is('menu/project/done') ? 'active':'' }}">
+                <li class="nav-item {{ request()->is('menu/project/done*') ? 'active':'' }}">
                     <a href="/menu/project/done">
                         <p>Project Done</p>
                     </a>

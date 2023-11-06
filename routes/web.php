@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth:user']],function(){
         Route::POST('/menu/project/ongoing/update/{id}',[ProjectController::class,'updateProject'])->name('menu.project.ongoing.update');
 
         Route::GET('/menu/project/done',[ProjectController::class,'projectDone'])->name('menu.project.done');
+        Route::GET('/menu/project/done/{id}/view',[ProjectController::class,'projectDoneView']);
 
 
         //Invoice Draft

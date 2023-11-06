@@ -33,7 +33,7 @@
                                 @if ($project->status == 0)
                                     <a href="/menu/project/ongoing/edit/{{ $project->id }}" class="btn btn-info">Edit</a>
                                 @else
-                                    <a href="" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                                    <a href="/menu/project/done/{{ $project->id }}/view" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                                 @endif
 
                             </td>

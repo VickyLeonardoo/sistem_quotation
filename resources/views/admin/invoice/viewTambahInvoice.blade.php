@@ -10,7 +10,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="">Quotation No</label>
-                            <select name="quotation_id" class="form-control" id="">
+                            <select name="quotation_id" class="form-control selectpicker" data-live-search="true">
                                 @foreach ($qto as $data)
                                     <option value="{{ $data->id }}">{{ $data->quotationNo }} - {{ $data->perusahaan->namaPerusahaan }} - {{ Carbon\Carbon::parse($data->tglQuotation)->format('d-M-Y') }}</option>
                                 @endforeach
