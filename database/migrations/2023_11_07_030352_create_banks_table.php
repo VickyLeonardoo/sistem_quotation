@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('banks', function (Blueprint $table) {
             $table->id();
-            $table->string('nama')->nullable();
-            $table->text('deskripsi')->nullable();
-            $table->foreignId('quotation_id')->references('id')->on('quotations');
-            $table->integer('proses')->nullable();
-            $table->enum('status',['0','1'])->default('0');
+            $table->integer('nomor');
+            $table->string('nama');
+            $table->string('bank');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('banks');
     }
 };

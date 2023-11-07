@@ -13,7 +13,11 @@
                         @csrf
                         <div class="form-group">
                             <label for="">Nama Project:</label>
-                            <input type="text" name="nama" class="form-control" value="{{ $project->nama  }}" placeholder="Masukkan Nama Project">
+                            <input type="text" name="nama" class="form-control" readonly value="{{ $project->nama  }}" placeholder="Masukkan Nama Project">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Deskripsi Project:</label>
+                            <textarea name="deskripsi" class="form-control" readonly placeholder="Masukkan Deskripsi Project" rows="3">{{ $project->deskripsi }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="">Nomor Quotation:</label>

@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <div class="card-title">Daftar Project</div>
                     <div class="card-category"></div>
-                    <a href="/master-data/produk/tambah-data" class="btn btn-primary">Tambah Project</a><br><br>
+                    {{-- <a href="/master-data/produk/tambah-data" class="btn btn-primary">Tambah Project</a><br><br> --}}
                     <table id="example" class="display" style="width:100%">
                     <thead>
                         <tr>

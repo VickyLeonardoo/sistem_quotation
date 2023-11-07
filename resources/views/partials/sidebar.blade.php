@@ -46,7 +46,7 @@
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
                     <li class="nav-item {{ request()->is('home') ? 'active' : '' }}">
-                        <a href="#base">
+                        <a href="/home">
                             <p>Dashboard</p>
                         </a>
                     </li>
@@ -122,22 +122,22 @@
                         <p>Confirmed Invoice</p>
                     </a>
                 </li>
-                {{-- <li class="nav-section">
+                <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
                     <h4 class="text-section">Delivery Orded</h4>
                 </li>
-                <li class="nav-item {{ request()->is('menu/draft-invoice','menu/draft-invoice/tambah-data','menu/draft-invoice/view-invoice/'.$slug) ? 'active' : '' }}">
-                    <a href="/menu/draft-invoice">
-                        <p>Draft DO</p>
+                <li class="nav-item {{ request()->is('menu/draft-delivery-order*') ? 'active':'' }}">
+                    <a href="/menu/draft-delivery-order">
+                        <p>Draft Delivery Order</p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->is('menu/confirmed-invoice','menu/confirmed-invoice/view-invoice/'.$slug) ? 'active' : '' }}">
-                    <a href="/menu/confirmed-invoice">
-                        <p>Confirmed DO</p>
+                <li class="nav-item {{ request()->is('menu/confirmed-delivery-order*') ? 'active':'' }}">
+                    <a href="/menu/confirmed-delivery-order">
+                        <p>Confirmed Delivery Order</p>
                     </a>
-                </li> --}}
+                </li>
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
@@ -147,6 +147,11 @@
                 <li class="nav-item {{ request()->is('profile') ? 'active' : '' }}">
                     <a href="/profile">
                         <p>Profile</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->is('menu/archive*') ? 'active':'' }}">
+                    <a href="/menu/archive">
+                        <p>Archive</p>
                     </a>
                 </li>
             </ul>

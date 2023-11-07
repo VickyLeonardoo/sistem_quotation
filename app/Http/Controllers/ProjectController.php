@@ -47,6 +47,7 @@ class ProjectController extends Controller
         $data = [
             'nama' => $request->nama,
             'status' => $request->status,
+            'deskripsi' => $request->deskripsi,
         ];
         $project->update($data);
         return redirect()->back()->withToastSuccess('Data Project berhasil diupdate');

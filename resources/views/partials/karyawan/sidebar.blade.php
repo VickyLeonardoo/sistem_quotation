@@ -68,7 +68,7 @@
                     </span>
                     <h4 class="text-section">Project</h4>
                 </li>
-                <li class="nav-item {{ request()->is('karyawan/menu/project/ongoing') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->is('karyawan/menu/project/ongoing*') ? 'active' : '' }}">
                     <a href="{{ url('karyawan/menu/project/ongoing') }}">
                         <p>On Going Project</p>
                     </a>

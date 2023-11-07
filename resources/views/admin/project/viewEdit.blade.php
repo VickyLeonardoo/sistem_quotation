@@ -16,6 +16,10 @@
                             <input type="text" name="nama" class="form-control" value="{{ $project->nama  }}" placeholder="Masukkan Nama Project">
                         </div>
                         <div class="form-group">
+                            <label for="">Deskripsi Project:</label>
+                            <textarea name="deskripsi" class="form-control" placeholder="Masukkan Deskripsi Project" rows="3">{{ $project->deskripsi }}</textarea>
+                        </div>
+                        <div class="form-group">
                             <label for="">Nomor Quotation:</label>
                             <input type="text" name="quotation_id" class="form-control" value="{{ $project->quotation->quotationNo }}" readonly>
                         </div>
@@ -34,24 +38,38 @@
             </div>
             <div class="card full-height">
                 <div class="card-header">
-                    <h3>Status Pengerjaan</h3>
+                    <div class="row">
+                        <div class="col-6">
+                            <h4>Log Pengerjaan</h4>
+                        </div>
+                        {{-- <div class="col-6">
+                            <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#exampleModal">Tambah</button>
+                        </div> --}}
+                    </div>
                 </div>
+
                 <div class="card-body">
-                    <div class="form-group">
-                        <label for="">Progres</label>
-                        <input type="text" class="form-control" value="{{ $project->proses }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Progres</label>
-                        <input type="text" class="form-control" value="{{ $project->proses }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Progres</label>
-                        <input type="text" class="form-control" value="{{ $project->proses }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Progres</label>
-                        <input type="text" class="form-control" value="{{ $project->proses }}">
+                    <div class="table-responsive">
+                        <table id="example" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Nomor</th>
+                                    <th>Tanggal</th>
+                                    <th>Deskripsi Pekerjaan</th>
+                                    <th>Kemajuan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($project->log as $log)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($log->tglPekerjaan)->isoFormat('D MMMM Y') }}</td>
+                                        <td>{{ $log->deskripsi }}</td>
+                                        <td>{{ $log->persentase }}%</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

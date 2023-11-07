@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->string('nama')->nullable();
-            $table->text('deskripsi')->nullable();
-            $table->foreignId('quotation_id')->references('id')->on('quotations');
-            $table->integer('proses')->nullable();
-            $table->enum('status',['0','1'])->default('0');
+            $table->string('deliveryNo')->nullable()->unique();
+            $table->foreignId('invoice_id')->references('id')->on('invoices');
+            $table->date('tglDelivery')->nullable();
+            $table->enum('status',['Menunggu Konfirmasi','Konfirmasi']);
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('deliveries');
     }
 };

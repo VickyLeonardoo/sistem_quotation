@@ -11,7 +11,7 @@
                     <table id="example" class="display" style="width:100%">
                     <thead>
                         <tr>
-                            <th>No Invoice Perusahaan</th>
+                            <th>No Quotation Perusahaan</th>
                             <th>Nama Perusahaan</th>
                             <th>Tanggal</th>
                             <th>Status</th>
@@ -19,14 +19,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($inv as $data)
+                        @foreach ($quotations as $data)
                             <tr>
-                                <td>{{ $data->invoiceNo }}</td>
-                                <td>{{ $data->quotation->perusahaan->namaPerusahaan }}</td>
+                                <td>{{ $data->quotationNo }}</td>
+                                <td>{{ $data->perusahaan->namaPerusahaan }}</td>
                                 <td>{{ Carbon\Carbon::parse($data->tglQuotation)->format('d-M-Y') }}</td>
-                                <td>{{ $data->status }}</td>
                                 <td>
-                                    <a href="/menu/confirmed-invoice/view-invoice/{{ $data->id }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                                    @if ($data->status == 0)
+                                        <div class="badge bg-warning text-light">Draft</div>
+                                    @elseif ($data->status == 1)
+                                        <div class="badge bg-info text-light">Email</div>
+                                    @else
+                                        <div class="badge bg-success text-light">Confirmed</div>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="/menu/confirmed-quotation/view-quotation/{{ $data->id }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
                                     {{-- <a href="/master-data/perusahaan/edit/{{ $data->slug }}" class="btn btn-info"><i class="fas fa-edit"></i>Edit</a> --}}
                                     {{-- <a href="/menu/draft-quotation/hapus-quotation/{{ $data->id }}" class="btn btn-danger"><i class="fas fa-trash"></i>Hapus</a> --}}
                                 </td>
